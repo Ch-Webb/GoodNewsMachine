@@ -74,6 +74,7 @@ public class Scraper {
 			Elements a = userAgent.doc.findEvery("<a><h3>");
 
 			ArrayList<Element> aList = new ArrayList<>(a.toList());
+			ArrayList<Element> outList = new ArrayList<>();
 			for(Element link : aList) {
 				try {
 					String url = link.getAt("href");
@@ -88,7 +89,7 @@ public class Scraper {
 						urlTest = false;
 					}
 					if(urlTest) {
-						aList.remove(link);
+						outList.add(link);
 					}
 
 				} catch(NotFound ignored) {
@@ -96,7 +97,7 @@ public class Scraper {
 				}
 			}
 
-			return getAllLinks(aList);
+			return getAllLinks(outList);
 		}
 		catch (JauntException e) {
 			e.printStackTrace();
