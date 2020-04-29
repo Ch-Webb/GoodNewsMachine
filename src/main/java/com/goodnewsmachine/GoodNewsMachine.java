@@ -1,6 +1,8 @@
 package com.goodnewsmachine;
 
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -10,6 +12,8 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+
+import java.util.ArrayList;
 
 public class GoodNewsMachine extends Application {
 
@@ -22,14 +26,24 @@ public class GoodNewsMachine extends Application {
         gridp.setConstraints(welcome, 1, 0);
 
         TextField t = new TextField();
-        gridp.setConstraints(t, 0, 2);
+        gridp.setConstraints(t, 1, 2);
         /* Need to work margins out i think */
         t.getStyleClass().add(".text-field");
+
+        ObservableList<String> options =
+                FXCollections.observableArrayList(
+                        "BBC",
+                        "The Guardian",
+                        "Option 3"
+                );
+        final ComboBox comboBox = new ComboBox(options);
+        comboBox.setValue("BBC");
+        gridp.setConstraints(comboBox, 0, 2);
 
         Button go = new Button("GO");
         gridp.setConstraints(go, 0, 3);
 
-        gridp.getChildren().addAll(welcome, t, go);
+        gridp.getChildren().addAll(welcome, t, comboBox, go);
 
         //Working out event handlers and popup boxes
         go.setOnAction(
@@ -43,24 +57,47 @@ public class GoodNewsMachine extends Application {
                         dialog.initOwner(stage);
                         ScrollPane scroll = new ScrollPane();
                         VBox v = new VBox();
+                        String site = comboBox.getValue().toString();
+                        ArrayList<String[]> links = new ArrayList<>();
+                        switch(site){
+                            case "BBC":
+                                links = s.getBBCLinks();
+                                break;
+                            case "The Guardian":
+                                links = s.getGuardianLinks();
+                                break;
+                        }
 
-                        for(String text: s.getAllLinks(t.getText())) {
-                            v.getChildren().add(new Label(text));
+                        for(String[] pair: links) {
+                            String text = pair[0];
+                            String url = pair[1];
+                            Hyperlink h = new Hyperlink(text);
+                            h.setOnAction(new EventHandler<ActionEvent>() {
+                                @Override
+                                public void handle(ActionEvent e) {
+                                    getHostServices().showDocument(url);
+                                }
+
+                            });
+
+                            v.getChildren().add(h);
                         }
                         scroll.setContent(v);
-                        dialog.setTitle("Testing!");
+                        dialog.setTitle("Good News!");
                         dialog.setScene(new Scene(scroll, 600,600));
 
 
 
 
                         dialog.show();
+
+
                     }
                 });
 
 
         Scene scene = new Scene(gridp, 640, 480);
-        scene.getStylesheets().add("resources/testcss.css");
+        scene.getStylesheets().add("testcss.css");
         stage.setScene(scene);
         stage.show();
     }
