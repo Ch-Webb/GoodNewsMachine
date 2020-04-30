@@ -117,7 +117,7 @@ public class Scraper {
 		}
 		return null;
 	}
-
+	//Independent links
 	public ArrayList<String[]> getIndependentLinks() {
 		try {
 			userAgent.visit( "https://www.telegraph.co.uk/news/");
