@@ -117,4 +117,19 @@ public class Scraper {
 		}
 		return null;
 	}
+
+	public ArrayList<String[]> getIndependentLinks() {
+		try {
+			userAgent.visit( "https://www.telegraph.co.uk/news/");
+			Elements a = userAgent.doc.findEvery("<a><h2>");
+
+			ArrayList<Element> aList = new ArrayList<>(a.toList());
+
+			return getAllLinks(aList);
+		}
+		catch (JauntException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 }

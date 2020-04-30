@@ -35,7 +35,8 @@ public class GoodNewsMachine extends Application {
                         "BBC",
                         "The Guardian",
                         "The Telegraph",
-                        "Option 4"
+                        "The Independent",
+                        "Option 5"
                 );
         final ComboBox comboBox = new ComboBox(options);
         comboBox.setValue("BBC");
@@ -63,6 +64,7 @@ public class GoodNewsMachine extends Application {
                             case "BBC" -> s.getBBCLinks();
                             case "The Guardian" -> s.getGuardianLinks();
                             case "The Telegraph" -> s.getTelegraphLinks();
+                            case "The Independent" -> s.getIndependentLinks();
                             default -> new ArrayList<>();
                         };
 
