@@ -5,18 +5,18 @@ import com.jaunt.*;
 import java.util.ArrayList;
 
 public class Scraper {
-	public static void main(String[] args) {
+	private UserAgent userAgent;
 
+	public static void main(String[] args) {
 	}
 
 	public Scraper() {
-
+		userAgent = new UserAgent();
 	}
 
 	//Debug purposes
 	public String getInner(String website) {
 		try {
-			UserAgent userAgent = new UserAgent();
 			userAgent.visit(website);
 			return userAgent.doc.innerHTML();
 
@@ -29,7 +29,6 @@ public class Scraper {
 
 	public ArrayList<String[]> getGuardianLinks() {
 		try {
-			UserAgent userAgent = new UserAgent();
 			userAgent.visit("https://www.theguardian.com/uk");
 			Elements a = userAgent.doc.findEvery("<a data-link-name=article>");
 
@@ -69,7 +68,6 @@ public class Scraper {
 
 	public ArrayList<String[]> getBBCLinks() {
 		try {
-			UserAgent userAgent = new UserAgent();
 			userAgent.visit("https://bbc.co.uk/news");
 			Elements a = userAgent.doc.findEvery("<a><h3>");
 
@@ -98,6 +96,21 @@ public class Scraper {
 			}
 
 			return getAllLinks(outList);
+		}
+		catch (JauntException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public ArrayList<String[]> getTelegraphLinks() {
+		try {
+			userAgent.visit( "https://www.telegraph.co.uk/news/");
+			Elements a = userAgent.doc.findEvery("<a data-track-block>");
+
+			ArrayList<Element> aList = new ArrayList<>(a.toList());
+
+			return getAllLinks(aList);
 		}
 		catch (JauntException e) {
 			e.printStackTrace();

@@ -34,7 +34,8 @@ public class GoodNewsMachine extends Application {
                 FXCollections.observableArrayList(
                         "BBC",
                         "The Guardian",
-                        "Option 3"
+                        "The Telegraph",
+                        "Option 4"
                 );
         final ComboBox comboBox = new ComboBox(options);
         comboBox.setValue("BBC");
@@ -58,15 +59,12 @@ public class GoodNewsMachine extends Application {
                         ScrollPane scroll = new ScrollPane();
                         VBox v = new VBox();
                         String site = comboBox.getValue().toString();
-                        ArrayList<String[]> links = new ArrayList<>();
-                        switch(site){
-                            case "BBC":
-                                links = s.getBBCLinks();
-                                break;
-                            case "The Guardian":
-                                links = s.getGuardianLinks();
-                                break;
-                        }
+                        ArrayList<String[]> links = switch (site) {
+                            case "BBC" -> s.getBBCLinks();
+                            case "The Guardian" -> s.getGuardianLinks();
+                            case "The Telegraph" -> s.getTelegraphLinks();
+                            default -> new ArrayList<>();
+                        };
 
                         for(String[] pair: links) {
                             String text = pair[0];
