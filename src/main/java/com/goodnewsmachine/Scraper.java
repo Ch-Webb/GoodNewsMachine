@@ -66,9 +66,11 @@ public class Scraper {
 		return output;
 	}
 
+
 	public ArrayList<String[]> getBBCLinks() {
 		try {
 			userAgent.visit("https://bbc.co.uk/news");
+			userAgent.doc.apply("coronavirus").submit("search");
 			Elements a = userAgent.doc.findEvery("<a><h3>");
 
 			ArrayList<Element> aList = new ArrayList<>(a.toList());
@@ -117,6 +119,7 @@ public class Scraper {
 		}
 		return null;
 	}
+
 	//Independent links
 	public ArrayList<String[]> getIndependentLinks() {
 		try {
