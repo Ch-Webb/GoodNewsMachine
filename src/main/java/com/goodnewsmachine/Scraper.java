@@ -5,7 +5,7 @@ import com.jaunt.*;
 import java.util.ArrayList;
 
 public class Scraper {
-	private UserAgent userAgent;
+	private final UserAgent userAgent;
 
 	public static void main(String[] args) {
 	}
@@ -70,7 +70,6 @@ public class Scraper {
 	public ArrayList<String[]> getBBCLinks() {
 		try {
 			userAgent.visit("https://bbc.co.uk/news");
-			userAgent.doc.apply("coronavirus").submit("search");
 			Elements a = userAgent.doc.findEvery("<a><h3>");
 
 			ArrayList<Element> aList = new ArrayList<>(a.toList());
@@ -134,5 +133,29 @@ public class Scraper {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public ArrayList<String[]> getReutersLinks() {
+		ArrayList<Element> out = new ArrayList<>();
+		for(int i = 0; i < 4; i ++) {
+			try {
+				userAgent.visit("https://uk.reuters.com/news/archive/oddlyenoughnews?view=page&page=" + i + "&pageSize=10");
+				Elements a = userAgent.doc.findEvery("<a><h3 class=story-title>");
+
+				ArrayList<Element> aList = new ArrayList<>(a.toList());
+
+				for (Element e : aList) {
+					String link = e.getAt("href");
+					if (link.contains("article")) {
+						out.add(e);
+					}
+				}
+
+
+			} catch (JauntException e) {
+				e.printStackTrace();
+			}
+		}
+		return getAllLinks(out);
 	}
 }
