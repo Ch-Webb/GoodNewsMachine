@@ -191,7 +191,6 @@ public class Scraper {
 
 				//All the article urls contain the word "article" so here's a pretty easy check for that
 				for (Element e : aList) {
-					System.out.println(e.getTextContent());
 					String link = e.getAt("href");
 					if (link.contains("article")) {
 						out.add(e);
