@@ -2,6 +2,7 @@ package com.goodnewsmachine;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -13,7 +14,7 @@ public class CvChecker {
         badCV = new HashMap<>();
         BufferedReader b;
         try {
-            b = new BufferedReader(new FileReader("src/main/resources/bad_cv.csv"));
+            b = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/bad_cv.csv")));
             String[] badWords = b.readLine().split(",");
             for(String word : badWords) {
                 Character startChar = word.charAt(0);
