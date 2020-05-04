@@ -20,8 +20,8 @@ public class GoodNewsMachine extends Application {
 
     @Override
     public void start(Stage stage) {
-        StackPane stack = new StackPane();
         System.out.println(UserAgent.getVersionInfo());
+        CvChecker c = new CvChecker();
 
         GridPane gridp = new GridPane();
         Label welcome = new Label("Welcome to the Good News Machine!");
