@@ -76,13 +76,13 @@ public class Scraper {
 				//Make a pair of the headline and its associated url
 				String[] pair = new String[]{childText, url};
 
-				//If it hasn't already seen this headline then add it to the output
-				//Check it by url as some headlines could be the same but have "LIVE" stuck infront of them
-				//But the url will always point to the same place
-				//Also get rid of any weird formatting (\n)
-				if (!names.contains(url) && !childText.contains("\n")) {
+				//If we've already seen this headline, ignore it
+				//If the headline contains weird formatting (\n), ignore it because it looks weird
+				if (!names.contains(childText) && !childText.contains("\n")) {
+					//If we haven't seen the headline and it doesn't look weird, add it to the output
+					//and also add it to the arraylist where we store our headlines we've seen
 					output.add(pair);
-					names.add(url);
+					names.add(childText);
 				}
 				//This error springs if the <a> tag doesn't have href attribute but it should'nt show up
 			} catch (NotFound not) {
@@ -191,6 +191,7 @@ public class Scraper {
 
 				//All the article urls contain the word "article" so here's a pretty easy check for that
 				for (Element e : aList) {
+					System.out.println(e.getTextContent());
 					String link = e.getAt("href");
 					if (link.contains("article")) {
 						out.add(e);
