@@ -69,7 +69,7 @@ public class Scraper {
 		for(Element e: aList) {
 			//Trim it down and replace all HTML entities with their respective characters and replace double spaces with single space
 			String childText = e.getTextContent(" ", true, true).trim().replaceAll("[ ]{2,}", " ");
-			childText = childText.replace("&#x27;", "\"").replace("LiveLive", "");
+			childText = childText.replace("&#x27;", "'").replace("LiveLive", "");
 			try {
 				//Get the value of the href attribute
 				String url = e.getAt("href");

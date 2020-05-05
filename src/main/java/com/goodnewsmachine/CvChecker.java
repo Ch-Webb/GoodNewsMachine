@@ -68,6 +68,10 @@ public class CvChecker {
         System.out.println("Headline:" + headline);
         int count = 0;
         for(String word: headline.split(" ")) {
+            word = word.replaceAll("[^a-zA-Z0-9\\-]", "").toLowerCase();
+            if(word.equals("")) {
+                continue;
+            }
             System.out.println(word);
             Character c = word.charAt(0);
             if (goodCV.get(c) != null && goodCV.get(c).contains(word)) {
