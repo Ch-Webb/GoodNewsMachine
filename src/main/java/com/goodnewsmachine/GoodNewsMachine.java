@@ -10,6 +10,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -139,6 +140,7 @@ public class GoodNewsMachine extends Application {
         scene.getStylesheets().add("testcss.css");
         //Give it a nice title
         stage.setTitle("The Good News Machine");
+        stage.getIcons().add(new Image("images/icon.jpg"));
         //Set the scene
         stage.setScene(scene);
         //Show it to the user
