@@ -61,14 +61,15 @@ public class Scraper {
 
 	public ArrayList<String[]> getAllLinks(ArrayList<Element> aList) {
 		//This one is used in every method in here, it gets the headline titles and their URLs and hands it back to GNM
-
+		CvChecker c = new CvChecker();
 		ArrayList<String> names = new ArrayList<>();
 		ArrayList<String[]> output = new ArrayList<>();
 
 		//Trawl through the elements in the arraylist
 		for(Element e: aList) {
-			//Trim it down and replace all HTML entities with their respective characters
-			String childText = e.getTextContent(" ", true, true).trim();
+			//Trim it down and replace all HTML entities with their respective characters and replace double spaces with single space
+			String childText = e.getTextContent(" ", true, true).trim().replaceAll("[ ]{2,}", " ");
+			childText = childText.replace("&#x27;", "\"").replace("LiveLive", "");
 			try {
 				//Get the value of the href attribute
 				String url = e.getAt("href");
@@ -78,8 +79,9 @@ public class Scraper {
 
 				//If we've already seen this headline, ignore it
 				//If the headline contains weird formatting (\n), ignore it because it looks weird
-				if (!names.contains(childText) && !childText.contains("\n")) {
-					//If we haven't seen the headline and it doesn't look weird, add it to the output
+				//If the headline is positive, use it!
+				if (!names.contains(childText) && !childText.contains("\n") && c.checkPositivity(childText)) {
+					//If we haven't seen the headline, it doesn't look weird, and it is positive, add it to the output
 					//and also add it to the arraylist where we store our headlines we've seen
 					output.add(pair);
 					names.add(childText);
@@ -158,9 +160,9 @@ public class Scraper {
 
 	public ArrayList<String[]> getIndependentLinks() {
 		try {
-			userAgent.visit( "https://www.telegraph.co.uk/news/");
+			userAgent.visit( "https://www.independent.co.uk/");
 			//All articles in the independent are <a> tags followed by <h2> tags
-			Elements a = userAgent.doc.findEvery("<a><h2>");
+			Elements a = userAgent.doc.findEvery("<a>");
 
 			ArrayList<Element> aList = new ArrayList<>(a.toList());
 

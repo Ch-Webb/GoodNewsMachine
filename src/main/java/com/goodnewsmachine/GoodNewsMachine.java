@@ -25,7 +25,6 @@ public class GoodNewsMachine extends Application {
     public void start(Stage stage) {
         //DEBUG -- REMOVE
         System.out.println(UserAgent.getVersionInfo());
-        CvChecker c = new CvChecker();
 
         //Main layout of the stage will follow a grid. Means you can move stuff around relatively easily
         GridPane gridp = new GridPane();

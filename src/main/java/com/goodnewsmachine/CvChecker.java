@@ -1,7 +1,6 @@
 package com.goodnewsmachine;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -63,8 +62,24 @@ public class CvChecker {
 
     //DEBUG
     public boolean checkPositivity(String headline) {
-        String test = badCV.get("a").get(0);
-        return true;
+        if (headline.equals("")) {
+            return false;
+        }
+        System.out.println("Headline:" + headline);
+        int count = 0;
+        for(String word: headline.split(" ")) {
+            System.out.println(word);
+            Character c = word.charAt(0);
+            if (goodCV.get(c) != null && goodCV.get(c).contains(word)) {
+                System.out.println("Word in goodCV: " + word);
+                count++;
+            }
+            else if(badCV.get(c) != null && badCV.get(c).contains(word)) {
+                System.out.println("Word in badCV: " + word);
+                count--;
+            }
+        }
+        return count > 0;
     }
 
 
