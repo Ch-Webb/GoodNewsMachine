@@ -8,10 +8,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
@@ -27,10 +30,37 @@ public class GoodNewsMachine extends Application {
         //DEBUG -- REMOVE
         System.out.println(UserAgent.getVersionInfo());
 
+        VBox title = new VBox();
+        Image logo = new Image("images/Logo.jpg");
+
+        HBox search = new HBox();
+        TextField t = new TextField();
+        //Provide options for the drop down list. The dropdown requires an ObservableList class
+        ObservableList<String> options =
+                FXCollections.observableArrayList(
+                        "BBC",
+                        "The Guardian",
+                        "The Telegraph",
+                        "The Independent",
+                        "Reuters - Oddly Enough",
+                        "Option 6"
+                );
+
+        search.setSpacing(10);
+        search.setPadding(new Insets(10, 10, 10, 10));
+        search.getChildren().addAll(options, t);
+
+
+        Button go = new Button("GO");
+        title.getChildren().addAll(logo, search, go);
+
+        StackPane stack = new StackPane(title);
+        StackPane.setAlignment(go, Pos.BASELINE_CENTER);
+
         //Main layout of the stage will follow a grid. Means you can move stuff around relatively easily
-        GridPane gridp = new GridPane();
+        /*GridPane gridp = new GridPane();
         //REPLACE WITH LOGO
-        Label welcome = new Label("Welcome to the Good News Machine!");
+
         //the setConstraints() method is effectively a coordinate system for moving controls around on the page
         gridp.setConstraints(welcome, 1, 0);
 
@@ -52,13 +82,15 @@ public class GoodNewsMachine extends Application {
         //Hasn't broken anything so far
         final ComboBox<String> comboBox = new ComboBox<>(options);
         comboBox.setValue("BBC");
+        stack.getChildren().addAll(go);
+        stack.setStyle("-fx-background-color: #87CEFA");
         gridp.setConstraints(comboBox, 0, 2);
 
-        Button go = new Button("GO");
-        gridp.setConstraints(go, 0, 3);
+        //Button go = new Button("GO");
+        gridp.setConstraints(go, 0, 3);*/
 
         //Need to actually bind these controls to the grid pane otherwise they wont show up
-        gridp.getChildren().addAll(welcome, t, comboBox, go);
+        //gridp.getChildren().addAll(welcome, t, comboBox, go);
 
         //This looks confusing but is mainly simple
         //calling the setOnAction method on go adds a handler to that button
@@ -141,7 +173,7 @@ public class GoodNewsMachine extends Application {
         scene.getStylesheets().add("testcss.css");
         //Give it a nice title
         stage.setTitle("The Good News Machine");
-        stage.getIcons().add(new Image("images/icon.jpg"));
+        stage.getIcons().add(new Image("images/Icon.jpg"));
         //Set the scene
         stage.setScene(scene);
         //Show it to the user
