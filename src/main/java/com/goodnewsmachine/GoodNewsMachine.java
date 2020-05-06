@@ -10,6 +10,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -28,11 +29,20 @@ public class GoodNewsMachine extends Application {
         //DEBUG -- REMOVE
         System.out.println(UserAgent.getVersionInfo());
 
-        BackgroundImage background = new BackgroundImage(new Image("images/Background1.jpg"), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
+        /*Image image = new Image("images/Logo.png");
+        ImageView iv = new ImageView(image);
+        Group root = new Group();
+        root.getChildren().addAll(iv);
+        Scene scene = new Scene(root,500,300);
+        stage.setScene(scene);
+        stage.setResizable(false);*/
 
-        
+        //BackgroundImage background = new BackgroundImage(new Image("images/Background1.jpg"), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
+        //Background backgroundImage = new Background(background);
+        //stage.setBackground(backgroundImage);
+
         VBox title = new VBox();
-        Image logo = new Image("images/Logo.jpg");
+        Image logo = new Image("images/Logo.png");
         ImageView logoNode = new ImageView(logo);
 
         HBox search = new HBox();
@@ -61,7 +71,6 @@ public class GoodNewsMachine extends Application {
 
         StackPane stack = new StackPane(title);
         StackPane.setAlignment(go, Pos.BASELINE_CENTER);
-        stack.setBackground(new Background(background));
 
         //Main layout of the stage will follow a grid. Means you can move stuff around relatively easily
         /*GridPane gridp = new GridPane();
@@ -108,6 +117,8 @@ public class GoodNewsMachine extends Application {
                     //So override the handle method (which is empty in the parent) and make it do whatever
                     @Override
                     public void handle(ActionEvent event) {
+                        Image logos = new Image("images/Logo.png");
+                        ImageView logoNodes = new ImageView(logos);
                         //We want a new stage to show up with the results (a new window)
                         final Stage dialog = new Stage();
 
@@ -162,7 +173,7 @@ public class GoodNewsMachine extends Application {
                         dialog.setTitle("Good News!");
                         //Add the scrollbar to the dialog box
                         dialog.setScene(new Scene(scroll, 600,600));
-                        dialog.getIcons().add(new Image("images/icon.jpg"));
+                        dialog.getIcons().add(new Image("images/icon.png"));
 
 
 
