@@ -14,10 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import java.util.ArrayList;
@@ -31,6 +28,10 @@ public class GoodNewsMachine extends Application {
         //DEBUG -- REMOVE
         System.out.println(UserAgent.getVersionInfo());
 
+        BackgroundImage background = new BackgroundImage(new Image("images/Background1.jpg"),
+            BackgroundRepeat.NO_REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
+            stage.setBackground(new Background(background));
+        
         VBox title = new VBox();
         Image logo = new Image("images/Logo.jpg");
         ImageView logoNode = new ImageView(logo);
@@ -55,7 +56,9 @@ public class GoodNewsMachine extends Application {
 
 
         Button go = new Button("GO");
+        go.setAlignment(Pos.CENTER);
         title.getChildren().addAll(logoNode, search, go);
+        title.setSpacing(10);
 
         StackPane stack = new StackPane(title);
         StackPane.setAlignment(go, Pos.BASELINE_CENTER);
@@ -176,7 +179,7 @@ public class GoodNewsMachine extends Application {
         scene.getStylesheets().add("testcss.css");
         //Give it a nice title
         stage.setTitle("The Good News Machine");
-        stage.getIcons().add(new Image("images/Icon.jpg"));
+        stage.getIcons().add(new Image("images/Icon.png"));
         //Set the scene
         stage.setScene(scene);
         //Show it to the user
