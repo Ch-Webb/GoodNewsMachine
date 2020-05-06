@@ -28,9 +28,8 @@ public class GoodNewsMachine extends Application {
         //DEBUG -- REMOVE
         System.out.println(UserAgent.getVersionInfo());
 
-        BackgroundImage background = new BackgroundImage(new Image("images/Background1.jpg"),
-            BackgroundRepeat.NO_REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
-            stage.setBackground(new Background(background));
+        BackgroundImage background = new BackgroundImage(new Image("images/Background1.jpg"), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
+
         
         VBox title = new VBox();
         Image logo = new Image("images/Logo.jpg");
@@ -62,6 +61,7 @@ public class GoodNewsMachine extends Application {
 
         StackPane stack = new StackPane(title);
         StackPane.setAlignment(go, Pos.BASELINE_CENTER);
+        stack.setBackground(new Background(background));
 
         //Main layout of the stage will follow a grid. Means you can move stuff around relatively easily
         /*GridPane gridp = new GridPane();
