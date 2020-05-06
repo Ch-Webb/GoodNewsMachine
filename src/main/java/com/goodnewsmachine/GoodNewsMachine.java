@@ -13,6 +13,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -32,6 +33,7 @@ public class GoodNewsMachine extends Application {
 
         VBox title = new VBox();
         Image logo = new Image("images/Logo.jpg");
+        ImageView logoNode = new ImageView(logo);
 
         HBox search = new HBox();
         TextField t = new TextField();
@@ -45,14 +47,15 @@ public class GoodNewsMachine extends Application {
                         "Reuters - Oddly Enough",
                         "Option 6"
                 );
-
+        final ComboBox<String> comboBox = new ComboBox<>(options);
+        comboBox.setValue("BBC");
         search.setSpacing(10);
         search.setPadding(new Insets(10, 10, 10, 10));
-        search.getChildren().addAll(options, t);
+        search.getChildren().addAll(comboBox, t);
 
 
         Button go = new Button("GO");
-        title.getChildren().addAll(logo, search, go);
+        title.getChildren().addAll(logoNode, search, go);
 
         StackPane stack = new StackPane(title);
         StackPane.setAlignment(go, Pos.BASELINE_CENTER);
@@ -168,7 +171,7 @@ public class GoodNewsMachine extends Application {
                 });
 
         //Add the GridBox to the Scene
-        Scene scene = new Scene(gridp, 640, 480);
+        Scene scene = new Scene(stack, 640, 480);
         //Bind the CSS sheet to the scene for a nice looking application
         scene.getStylesheets().add("testcss.css");
         //Give it a nice title

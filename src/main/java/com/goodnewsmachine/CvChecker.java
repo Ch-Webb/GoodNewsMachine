@@ -83,6 +83,16 @@ public class CvChecker {
                 count--;
             }
         }
+        System.out.println("Final Score: " + count);
+        if(count > 0 ) {
+            System.out.println("Classified: Overall Positive");
+        }
+        else if (count == 0) {
+            System.out.println("Classified: Overall Neutral");
+        }
+        else {
+            System.out.println("Classified: Overall Negative");
+        }
         return count > 0;
     }
 
