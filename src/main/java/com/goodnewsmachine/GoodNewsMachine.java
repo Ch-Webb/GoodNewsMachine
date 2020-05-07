@@ -10,17 +10,23 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import java.io.FileInputStream;
+import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Stack;
+
+import static com.sun.javafx.scene.control.skin.Utils.getResource;
 
 //Every JavaFX application has to extend the master Application class
 public class GoodNewsMachine extends Application {
@@ -37,6 +43,7 @@ public class GoodNewsMachine extends Application {
 
         HBox search = new HBox();
         TextField t = new TextField();
+        t.setPromptText("Leave blank to see all!");
         //Provide options for the drop down list. The dropdown requires an ObservableList class
         ObservableList<String> options =
                 FXCollections.observableArrayList(
@@ -56,10 +63,26 @@ public class GoodNewsMachine extends Application {
 
         Button go = new Button("GO");
         go.setAlignment(Pos.CENTER);
+        go.setPrefSize(80, 40);
+        go.setStyle("-fx-font-size:20");
         title.getChildren().addAll(logoNode, search, go);
         title.setSpacing(10);
 
-        Image backI = new Image("images/Background2.jpg");
+        //Generates random background
+       /* ArrayList<String> images = new ArrayList<String>();
+        File directory = new File("resources/images/background");
+
+        File[] files = directory.listFiles();
+        for (File f : files) {
+            images.add(f.getName());
+        }
+        int countImages = images.size();
+        int imageNumber = (int)(Math.random()*countImages);
+        String image = images.get(imageNumber);
+
+        //Sets background
+        Image backI = new Image(image);*/
+        Image backI = new Image("images/background/Background2.jpg");
         BackgroundImage background = new BackgroundImage(backI, BackgroundRepeat.NO_REPEAT,
                 BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
                 new BackgroundSize(600, 480, false, false, true, true));
@@ -81,8 +104,11 @@ public class GoodNewsMachine extends Application {
                     //So override the handle method (which is empty in the parent) and make it do whatever
                     @Override
                     public void handle(ActionEvent event) {
-                        Image logos = new Image("images/Logo.png");
-                        ImageView logoNodes = new ImageView(logos);
+                        Image backI = new Image("images/background/Background2.jpg");
+                        BackgroundImage background = new BackgroundImage(backI, BackgroundRepeat.NO_REPEAT,
+                                BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
+                                new BackgroundSize(600, 480, false, false, true, true));
+
                         //We want a new stage to show up with the results (a new window)
                         final Stage dialog = new Stage();
 
@@ -114,12 +140,23 @@ public class GoodNewsMachine extends Application {
                             default -> new ArrayList<>();
                         };
 
+                        Image logos = new Image("images/Logo.png");
+                        ImageView logoNodes = new ImageView(logos);
+                        Text t = new Text("Click on the links to read the full story...");
+                        t.setFont(new Font("Arial", 12));
+
+                        v.getChildren().addAll(logoNodes, t);
+
                         //Get url and text for each headline
                         for(String[] pair: links) {
                             String text = pair[0];
                             String url = pair[1];
                             //Hyperlinks don't actually link to the url without adding a handler
                             Hyperlink h = new Hyperlink(text);
+                            h.setTextFill(Color.BLACK);
+                            h.setFont(new Font("Arial", 20));
+                            h.setPadding(new Insets(20, 10, 0, 10));
+                            h.setStyle("-fx-background-color: orange;");
                             //So add another handler! handler inside a handler inside an application
                             h.setOnAction(new EventHandler<ActionEvent>() {
                                 @Override
@@ -130,8 +167,12 @@ public class GoodNewsMachine extends Application {
 
                             });
                             //Add the hyperlink to the VBox
+
                             v.getChildren().add(h);
+                            v.setAlignment(Pos.CENTER);
+
                         }
+
                         //Add the VBox to the scrollbar
                         scroll.setContent(v);
                         //Give it a nice title
@@ -139,8 +180,6 @@ public class GoodNewsMachine extends Application {
                         //Add the scrollbar to the dialog box
                         dialog.setScene(new Scene(scroll, backI.getWidth(), backI.getHeight()));
                         dialog.getIcons().add(new Image("images/icon.png"));
-
-
 
                         //Show it to the user
                         dialog.show();
