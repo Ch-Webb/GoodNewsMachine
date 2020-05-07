@@ -69,8 +69,8 @@ public class GoodNewsMachine extends Application {
         title.setSpacing(10);
 
         //Generates random background
-       /* ArrayList<String> images = new ArrayList<String>();
-        File directory = new File("resources/images/background");
+        ArrayList<String> images = new ArrayList<String>();
+        /*File directory = new File("images/background");
 
         File[] files = directory.listFiles();
         for (File f : files) {
@@ -80,9 +80,12 @@ public class GoodNewsMachine extends Application {
         int imageNumber = (int)(Math.random()*countImages);
         String image = images.get(imageNumber);
 
-        //Sets background
-        Image backI = new Image(image);*/
-        Image backI = new Image("images/background/Background2.jpg");
+        //Sets background*/
+        int image = 2 + (int)(Math.random() * ((8 - 2) + 1));
+        if(!(image < 8 && image > 2)) {
+            image = 6;
+        }
+        Image backI = new Image("images/background/Background" + image + ".jpg");
         BackgroundImage background = new BackgroundImage(backI, BackgroundRepeat.NO_REPEAT,
                 BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
                 new BackgroundSize(600, 480, false, false, true, true));
