@@ -18,6 +18,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+
+import java.io.FileInputStream;
 import java.util.ArrayList;
 
 //Every JavaFX application has to extend the master Application class
@@ -37,9 +39,6 @@ public class GoodNewsMachine extends Application {
         stage.setScene(scene);
         stage.setResizable(false);*/
 
-        //BackgroundImage background = new BackgroundImage(new Image("images/Background1.jpg"), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
-        //Background backgroundImage = new Background(background);
-        //stage.setBackground(backgroundImage);
 
         VBox title = new VBox();
         Image logo = new Image("images/Logo.png");
@@ -69,8 +68,17 @@ public class GoodNewsMachine extends Application {
         title.getChildren().addAll(logoNode, search, go);
         title.setSpacing(10);
 
-        StackPane stack = new StackPane(title);
-        StackPane.setAlignment(go, Pos.BASELINE_CENTER);
+        Image backI = new Image("images/Background2.jpg");
+        BackgroundImage background = new BackgroundImage(backI, BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
+                new BackgroundSize(600, 480, false, false, true, true));
+
+
+        StackPane stack = new StackPane();
+        stack.getChildren().addAll(title);
+        stack.setBackground(new Background(background));
+        stack.setAlignment(go, Pos.BASELINE_CENTER);
+
 
         //Main layout of the stage will follow a grid. Means you can move stuff around relatively easily
         /*GridPane gridp = new GridPane();
@@ -172,7 +180,7 @@ public class GoodNewsMachine extends Application {
                         //Give it a nice title
                         dialog.setTitle("Good News!");
                         //Add the scrollbar to the dialog box
-                        dialog.setScene(new Scene(scroll, 600,600));
+                        dialog.setScene(new Scene(scroll, backI.getWidth(), backI.getHeight()));
                         dialog.getIcons().add(new Image("images/icon.png"));
 
 
@@ -185,7 +193,13 @@ public class GoodNewsMachine extends Application {
                 });
 
         //Add the GridBox to the Scene
-        Scene scene = new Scene(stack, 640, 480);
+        System.out.println("Height: " + backI.getHeight() + " Width: " + backI.getWidth());
+        int width = (int) Math.floor(backI.getWidth());
+        int height = (int) Math.floor(backI.getHeight());
+
+
+        Scene scene = new Scene(stack, 600, 480);
+
         //Bind the CSS sheet to the scene for a nice looking application
         scene.getStylesheets().add("testcss.css");
         //Give it a nice title
