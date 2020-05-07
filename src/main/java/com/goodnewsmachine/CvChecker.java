@@ -60,26 +60,38 @@ public class CvChecker {
         }
     }
 
-    //DEBUG
+    //This is the classification method of the entire code
     public boolean checkPositivity(String headline) {
+        //Just to remove weird strings that made it through
         if (headline.equals("")) {
             return false;
         }
         System.out.println("Headline:" + headline);
+        //Initialise a "positivity value" at 0 (neutral) initially
         int count = 0;
+        //For each word in the headline (split string on occurrences of " ")
         for(String word: headline.split(" ")) {
+            //To start with, format the word to remove all punctuation (thats the regex in replaceAl())
+            //And cast it to lower case so there's no confusion in the CV
             word = word.replaceAll("[^a-zA-Z0-9\\-]", "").toLowerCase();
+            //If, in removing punctuation, we've turned the word into an empty string then skip it
+            //This happens on "words" like "-" (even though it's not a word)
             if(word.equals("")) {
                 continue;
             }
             System.out.println(word);
+            //Get the first letter of that word
             Character c = word.charAt(0);
+            //If its corresponding arraylist exists (!= null) and that word is in the good CV
             if (goodCV.get(c) != null && goodCV.get(c).contains(word)) {
+                //+1 to positivity score
                 System.out.println("Word in goodCV: " + word);
                 count++;
             }
+            //Likewise, if it's in the bad CV
             else if(badCV.get(c) != null && badCV.get(c).contains(word)) {
                 System.out.println("Word in badCV: " + word);
+                //-1 to positivity score
                 count--;
             }
         }
@@ -93,6 +105,7 @@ public class CvChecker {
         else {
             System.out.println("Classified: Overall Negative");
         }
+        //Return anything that's in the positive domain
         return count > 0;
     }
 

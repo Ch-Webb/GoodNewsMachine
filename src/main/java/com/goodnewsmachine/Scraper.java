@@ -35,7 +35,7 @@ public class Scraper {
 	//While this looks like repetitive code, it differs just enough for each one that they have to have
 	//Different methods. see the BBC links for a good example of this
 
-	public ArrayList<String[]> getGuardianLinks() {
+	public ArrayList<String[]> getGuardianLinks(String search) {
 		//Each of these follows a format
 		//Wrap everything in a try as Jaunt requires exception handling
 		try {
@@ -49,7 +49,7 @@ public class Scraper {
 			ArrayList<Element> aList = new ArrayList<>(a.toList());
 
 			//hand off to a method
-			return getAllLinks(aList);
+			return getAllLinks(aList, search);
 		}
 		catch (JauntException e) {
 			e.printStackTrace();
@@ -59,7 +59,8 @@ public class Scraper {
 		return null;
 	}
 
-	public ArrayList<String[]> getAllLinks(ArrayList<Element> aList) {
+	public ArrayList<String[]> getAllLinks(ArrayList<Element> aList, String search) {
+		System.out.println("Search: " + search.equals(""));
 		//This one is used in every method in here, it gets the headline titles and their URLs and hands it back to GNM
 		CvChecker c = new CvChecker();
 		ArrayList<String> names = new ArrayList<>();
@@ -80,13 +81,15 @@ public class Scraper {
 				//If we've already seen this headline, ignore it
 				//If the headline contains weird formatting (\n), ignore it because it looks weird
 				//If the headline is positive, use it!
-				if (!names.contains(childText) && !childText.contains("\n") && c.checkPositivity(childText)) {
+				String searchFormatted = search.toLowerCase();
+				String ctFormatted = childText.toLowerCase();
+				if (!names.contains(childText) && !childText.contains("\n") && c.checkPositivity(childText) && ctFormatted.contains(searchFormatted)) {
 					//If we haven't seen the headline, it doesn't look weird, and it is positive, add it to the output
 					//and also add it to the arraylist where we store our headlines we've seen
 					output.add(pair);
 					names.add(childText);
 				}
-				//This error springs if the <a> tag doesn't have href attribute but it should'nt show up
+				//This error springs if the <a> tag doesn't have href attribute but it shouldn't show up
 			} catch (NotFound not) {
 				not.printStackTrace();
 			}
@@ -96,7 +99,7 @@ public class Scraper {
 	}
 
 
-	public ArrayList<String[]> getBBCLinks() {
+	public ArrayList<String[]> getBBCLinks(String search) {
 		try {
 			userAgent.visit("https://bbc.co.uk/news");
 			Elements a = userAgent.doc.findEvery("<a><h3>");
@@ -132,7 +135,7 @@ public class Scraper {
 				}
 			}
 
-			return getAllLinks(outList);
+			return getAllLinks(outList, search);
 		}
 		catch (JauntException e) {
 			e.printStackTrace();
@@ -140,7 +143,7 @@ public class Scraper {
 		return null;
 	}
 
-	public ArrayList<String[]> getTelegraphLinks() {
+	public ArrayList<String[]> getTelegraphLinks(String search) {
 		//The Telegraph is nice and easy
 		try {
 			userAgent.visit( "https://www.telegraph.co.uk/news/");
@@ -150,7 +153,7 @@ public class Scraper {
 
 			ArrayList<Element> aList = new ArrayList<>(a.toList());
 
-			return getAllLinks(aList);
+			return getAllLinks(aList, search);
 		}
 		catch (JauntException e) {
 			e.printStackTrace();
@@ -158,23 +161,8 @@ public class Scraper {
 		return null;
 	}
 
-	public ArrayList<String[]> getIndependentLinks() {
-		try {
-			userAgent.visit( "https://www.independent.co.uk/");
-			//All articles in the independent are <a> tags followed by <h2> tags
-			Elements a = userAgent.doc.findEvery("<a>");
 
-			ArrayList<Element> aList = new ArrayList<>(a.toList());
-
-			return getAllLinks(aList);
-		}
-		catch (JauntException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	public ArrayList<String[]> getReutersLinks() {
+	public ArrayList<String[]> getReutersLinks(String search) {
 		//Reuters is an interesting one
 		//I'm actually scraping from the Oddly Enough section of Reuters as it's still topical but it's
 		//more eclectic news and so you're more likely to get nice news from it
@@ -204,6 +192,6 @@ public class Scraper {
 				e.printStackTrace();
 			}
 		}
-		return getAllLinks(out);
+		return getAllLinks(out, search);
 	}
 }

@@ -31,15 +31,6 @@ public class GoodNewsMachine extends Application {
         //DEBUG -- REMOVE
         System.out.println(UserAgent.getVersionInfo());
 
-        /*Image image = new Image("images/Logo.png");
-        ImageView iv = new ImageView(image);
-        Group root = new Group();
-        root.getChildren().addAll(iv);
-        Scene scene = new Scene(root,500,300);
-        stage.setScene(scene);
-        stage.setResizable(false);*/
-
-
         VBox title = new VBox();
         Image logo = new Image("images/Logo.png");
         ImageView logoNode = new ImageView(logo);
@@ -80,41 +71,6 @@ public class GoodNewsMachine extends Application {
         stack.setAlignment(go, Pos.BASELINE_CENTER);
 
 
-        //Main layout of the stage will follow a grid. Means you can move stuff around relatively easily
-        /*GridPane gridp = new GridPane();
-        //REPLACE WITH LOGO
-
-        //the setConstraints() method is effectively a coordinate system for moving controls around on the page
-        gridp.setConstraints(welcome, 1, 0);
-
-        //Used for user input for search functionality
-        TextField t = new TextField();
-        gridp.setConstraints(t, 1, 2);
-
-        //Provide options for the drop down list. The dropdown requires an ObservableList class
-        ObservableList<String> options =
-                FXCollections.observableArrayList(
-                        "BBC",
-                        "The Guardian",
-                        "The Telegraph",
-                        "The Independent",
-                        "Reuters - Oddly Enough",
-                        "Option 6"
-                );
-        //Intellij told me to make this final but I don't know why
-        //Hasn't broken anything so far
-        final ComboBox<String> comboBox = new ComboBox<>(options);
-        comboBox.setValue("BBC");
-        stack.getChildren().addAll(go);
-        stack.setStyle("-fx-background-color: #87CEFA");
-        gridp.setConstraints(comboBox, 0, 2);
-
-        //Button go = new Button("GO");
-        gridp.setConstraints(go, 0, 3);*/
-
-        //Need to actually bind these controls to the grid pane otherwise they wont show up
-        //gridp.getChildren().addAll(welcome, t, comboBox, go);
-
         //This looks confusing but is mainly simple
         //calling the setOnAction method on go adds a handler to that button
         go.setOnAction(
@@ -146,13 +102,14 @@ public class GoodNewsMachine extends Application {
                         VBox v = new VBox();
                         //Check user preference for which site to visit
                         String site = comboBox.getValue().toString();
+                        String search = t.getText();
+                        //Run a switch-case on the selection of the combo box
                         ArrayList<String[]> links = switch (site) {
                             //May as well do it by string - increases visibility
-                            case "BBC" -> s.getBBCLinks();
-                            case "The Guardian" -> s.getGuardianLinks();
-                            case "The Telegraph" -> s.getTelegraphLinks();
-                            case "The Independent" -> s.getIndependentLinks();
-                            case "Reuters - Oddly Enough" -> s.getReutersLinks();
+                            case "BBC" -> s.getBBCLinks(search);
+                            case "The Guardian" -> s.getGuardianLinks(search);
+                            case "The Telegraph" -> s.getTelegraphLinks(search);
+                            case "Reuters - Oddly Enough" -> s.getReutersLinks(search);
                             //This will never be used but needs to be there for the compiler
                             default -> new ArrayList<>();
                         };
