@@ -38,10 +38,13 @@ public class GoodNewsMachine extends Application {
         System.out.println(UserAgent.getVersionInfo());
 
         VBox title = new VBox();
+        //Inserts the logo
         Image logo = new Image("images/Logo.png");
         ImageView logoNode = new ImageView(logo);
 
+        //Creates a (HBox) horizontal box
         HBox search = new HBox();
+        //Allows the user to refine their search and prompts them with instructions in the text field
         TextField t = new TextField();
         t.setPromptText("Leave blank to see all!");
         //Provide options for the drop down list. The dropdown requires an ObservableList class
@@ -59,28 +62,22 @@ public class GoodNewsMachine extends Application {
         search.setSpacing(10);
         search.setPadding(new Insets(10, 10, 10, 10));
         search.getChildren().addAll(comboBox, t);
+        search.setAlignment(Pos.CENTER);
 
 
         Button go = new Button("GO");
         go.setAlignment(Pos.CENTER);
+        //Resizes the go button
         go.setPrefSize(80, 40);
+        //Sets the font size in the go button
         go.setStyle("-fx-font-size:20");
+        //Adds the logo, HBox and go button in a (VBox)vertical box
         title.getChildren().addAll(logoNode, search, go);
         title.setSpacing(10);
+        title.setAlignment(Pos.CENTER);
 
         //Generates random background
         ArrayList<String> images = new ArrayList<String>();
-        /*File directory = new File("images/background");
-
-        File[] files = directory.listFiles();
-        for (File f : files) {
-            images.add(f.getName());
-        }
-        int countImages = images.size();
-        int imageNumber = (int)(Math.random()*countImages);
-        String image = images.get(imageNumber);
-
-        //Sets background*/
         int image = 2 + (int)(Math.random() * ((8 - 2) + 1));
         if(!(image < 8 && image > 2)) {
             image = 6;
@@ -90,11 +87,14 @@ public class GoodNewsMachine extends Application {
                 BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
                 new BackgroundSize(600, 480, false, false, true, true));
 
-
+        //Stack pane is a layout tool
         StackPane stack = new StackPane();
+        //Adds the VBox to the stack pane
         stack.getChildren().addAll(title);
         stack.setBackground(new Background(background));
-        stack.setAlignment(go, Pos.BASELINE_CENTER);
+        StackPane.setAlignment(title, Pos.CENTER);
+        StackPane.setAlignment(go, Pos.BASELINE_CENTER);
+
 
 
         //This looks confusing but is mainly simple
@@ -107,13 +107,9 @@ public class GoodNewsMachine extends Application {
                     //So override the handle method (which is empty in the parent) and make it do whatever
                     @Override
                     public void handle(ActionEvent event) {
-                        Image backI = new Image("images/background/Background2.jpg");
-                        BackgroundImage background = new BackgroundImage(backI, BackgroundRepeat.NO_REPEAT,
-                                BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
-                                new BackgroundSize(600, 480, false, false, true, true));
-
                         //We want a new stage to show up with the results (a new window)
                         final Stage dialog = new Stage();
+                        StackPane root = new StackPane();
 
                         //The modality of a window is a property that defines how the window interacts
                         //with other windows from the program
@@ -173,9 +169,9 @@ public class GoodNewsMachine extends Application {
 
                             v.getChildren().add(h);
                             v.setAlignment(Pos.CENTER);
-
                         }
-
+                        root.getChildren().add(v);
+                        StackPane.setAlignment(v, Pos.BASELINE_CENTER);
                         //Add the VBox to the scrollbar
                         scroll.setContent(v);
                         //Give it a nice title
@@ -186,8 +182,6 @@ public class GoodNewsMachine extends Application {
 
                         //Show it to the user
                         dialog.show();
-
-
                     }
                 });
 
@@ -208,6 +202,7 @@ public class GoodNewsMachine extends Application {
         stage.setScene(scene);
         //Show it to the user
         stage.show();
+
     }
 
     public static void main(String[] args) {
