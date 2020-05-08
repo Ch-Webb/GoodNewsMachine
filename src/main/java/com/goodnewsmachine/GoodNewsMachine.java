@@ -145,9 +145,9 @@ public class GoodNewsMachine extends Application {
                             //Hyperlinks don't actually link to the url without adding a handler
                             Hyperlink h = new Hyperlink(text);
                             h.setTextFill(Color.BLACK);
-                            h.setFont(new Font("Arial", 20));
+                            h.setFont(new Font("Arial", 18));
                             h.setPadding(new Insets(20, 10, 0, 10));
-                            h.setStyle("-fx-background-color: orange;");
+                            h.setStyle("-fx-background-color: white;");
                             //So add another handler! handler inside a handler inside an application
                             h.setOnAction(new EventHandler<ActionEvent>() {
                                 @Override
@@ -161,7 +161,17 @@ public class GoodNewsMachine extends Application {
 
                             v.getChildren().add(h);
                             v.setAlignment(Pos.CENTER);
+
+                            v.setPrefSize(600, 480);
+                            //Generates random background
+                            int image = generateRandom(2, 8);
+                            Image backI = new Image("images/background/Background" + image + ".jpg");
+                            BackgroundImage background = new BackgroundImage(backI, BackgroundRepeat.NO_REPEAT,
+                                    BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
+                                    new BackgroundSize(600, 480, false, false, true, true));
+                            v.setBackground(new Background(background));
                         }
+
                         root.getChildren().add(v);
                         StackPane.setAlignment(v, Pos.BASELINE_CENTER);
                         //Add the VBox to the scrollbar
