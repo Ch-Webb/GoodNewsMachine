@@ -2,6 +2,7 @@ package com.goodnewsmachine;
 
 //Lots of imports - javafx doesn't allow import * so got to import all separately
 //Probably better for memory usage though
+
 import com.jaunt.UserAgent;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -21,12 +22,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Stack;
-
-import static com.sun.javafx.scene.control.skin.Utils.getResource;
 
 //Every JavaFX application has to extend the master Application class
 public class GoodNewsMachine extends Application {
@@ -77,11 +73,7 @@ public class GoodNewsMachine extends Application {
         title.setAlignment(Pos.CENTER);
 
         //Generates random background
-        ArrayList<String> images = new ArrayList<String>();
-        int image = 2 + (int)(Math.random() * ((8 - 2) + 1));
-        if(!(image < 8 && image > 2)) {
-            image = 6;
-        }
+        int image = generateRandom(2, 8);
         Image backI = new Image("images/background/Background" + image + ".jpg");
         BackgroundImage background = new BackgroundImage(backI, BackgroundRepeat.NO_REPEAT,
                 BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
@@ -126,7 +118,7 @@ public class GoodNewsMachine extends Application {
                         //Vertical listings.
                         VBox v = new VBox();
                         //Check user preference for which site to visit
-                        String site = comboBox.getValue().toString();
+                        String site = comboBox.getValue();
                         String search = t.getText();
                         //Run a switch-case on the selection of the combo box
                         ArrayList<String[]> links = switch (site) {
@@ -174,10 +166,24 @@ public class GoodNewsMachine extends Application {
                         StackPane.setAlignment(v, Pos.BASELINE_CENTER);
                         //Add the VBox to the scrollbar
                         scroll.setContent(v);
+
+                        //scroll.setStyle("-fx-background-color: transparent;");
+                        StackPane tempStack = new StackPane();
+                        /*int rand = generateRandom(2, 8);
+                        Image back = new Image("images/background/Background2.jpg");
+                        BackgroundImage backg = new BackgroundImage(back, BackgroundRepeat.NO_REPEAT,
+                                BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
+                                new BackgroundSize(600, 600, false, false, true, true));
+                        //v.setBackground(new Background(backg));
+
+
+                        tempStack.getChildren().add(scroll);
+                        tempStack.setBackground(new Background(backg));
+                         */
                         //Give it a nice title
                         dialog.setTitle("Good News!");
                         //Add the scrollbar to the dialog box
-                        dialog.setScene(new Scene(scroll, backI.getWidth(), backI.getHeight()));
+                        dialog.setScene(new Scene(tempStack, 600, 600));
                         dialog.getIcons().add(new Image("images/icon.png"));
 
                         //Show it to the user
@@ -187,9 +193,6 @@ public class GoodNewsMachine extends Application {
 
         //Add the GridBox to the Scene
         System.out.println("Height: " + backI.getHeight() + " Width: " + backI.getWidth());
-        int width = (int) Math.floor(backI.getWidth());
-        int height = (int) Math.floor(backI.getHeight());
-
 
         Scene scene = new Scene(stack, 600, 480);
 
@@ -209,6 +212,14 @@ public class GoodNewsMachine extends Application {
         //Launch the application
         //Does some sort of trickery but that's all JavaFX side so I can't explain it
         launch();
+    }
+
+    public int generateRandom(int min, int max) {
+        int num = min + (int)(Math.random() * ((max - min) + 1));
+        if(!(num < max && num > min)) {
+            num = (int) Math.ceil((max + min)/2);
+        }
+        return num;
     }
 
 }

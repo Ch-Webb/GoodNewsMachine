@@ -2,4 +2,10 @@
 	-fx-margin-top: 100px;
 }
 
--fx-text-size:
+#scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+#scroll-pane {
+    -fx-background-color: transparent;
+}
