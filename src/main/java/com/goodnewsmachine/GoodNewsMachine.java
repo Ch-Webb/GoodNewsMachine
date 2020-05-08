@@ -183,7 +183,7 @@ public class GoodNewsMachine extends Application {
                         //Give it a nice title
                         dialog.setTitle("Good News!");
                         //Add the scrollbar to the dialog box
-                        dialog.setScene(new Scene(tempStack, 600, 600));
+                        dialog.setScene(new Scene(scroll, 600, 600));
                         dialog.getIcons().add(new Image("images/icon.png"));
 
                         //Show it to the user
