@@ -30,9 +30,9 @@ public class GoodNewsMachine extends Application {
     //Override Application-provided start() method
     @Override
     public void start(Stage stage) {
-        //DEBUG -- REMOVE
-        System.out.println(UserAgent.getVersionInfo());
 
+        //This vertical layout box will contain the logo, the search bars and the go button
+        //This helps us achieve the "google-esque" layout we're aiming for
         VBox title = new VBox();
         //Inserts the logo
         Image logo = new Image("images/Logo.png");
@@ -42,7 +42,8 @@ public class GoodNewsMachine extends Application {
         HBox search = new HBox();
         //Allows the user to refine their search and prompts them with instructions in the text field
         TextField t = new TextField();
-        t.setPromptText("Leave blank to see all!");
+        t.setPrefWidth(160);
+        t.setPromptText("Leave me blank to see all!");
         //Provide options for the drop down list. The dropdown requires an ObservableList class
         ObservableList<String> options =
                 FXCollections.observableArrayList(
@@ -53,14 +54,19 @@ public class GoodNewsMachine extends Application {
                         "Reuters - Oddly Enough"
                 );
         final ComboBox<String> comboBox = new ComboBox<>(options);
+        //Set default value to the first item
         comboBox.setValue("BBC");
+        //Layout stuff
         search.setSpacing(10);
         search.setPadding(new Insets(10, 10, 10, 10));
+        //Add the combobox and search bar to the hbox so that they're next to each other
         search.getChildren().addAll(comboBox, t);
+        //Make sure the Hbox is aligned central
         search.setAlignment(Pos.CENTER);
 
 
         Button go = new Button("GO");
+        //Align central
         go.setAlignment(Pos.CENTER);
         //Resizes the go button
         go.setPrefSize(80, 40);
@@ -71,18 +77,23 @@ public class GoodNewsMachine extends Application {
         title.setSpacing(10);
         title.setAlignment(Pos.CENTER);
 
-        //Generates random background
+        //Generates random background from our set of backgrounds in main/resources/images/background
         int image = generateRandom(2, 8);
         Image backI = new Image("images/background/Background" + image + ".jpg");
+        //Defines the new background image using the default constructor
+        //NO_REPEAT means it doesn't repeat in the y or x axis
         BackgroundImage background = new BackgroundImage(backI, BackgroundRepeat.NO_REPEAT,
                 BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
+                //width, height, height||width as percentage, contain (expand to container size), cover (ensure no whitespace)
                 new BackgroundSize(600, 480, false, false, true, true));
 
-        //Stack pane is a layout tool
+        //Stack pane is a layout tool that stacks controls on top of one another (while centering everything)
         StackPane stack = new StackPane();
         //Adds the VBox to the stack pane
         stack.getChildren().addAll(title);
+        //Push our random generated background
         stack.setBackground(new Background(background));
+        //Make sure that everything is centered
         StackPane.setAlignment(title, Pos.CENTER);
         StackPane.setAlignment(go, Pos.BASELINE_CENTER);
 
@@ -130,9 +141,10 @@ public class GoodNewsMachine extends Application {
                             //This will never be used but needs to be there for the compiler
                             default -> new ArrayList<>();
                         };
-
+                        //Reimport logo for visuals
                         Image logos = new Image("images/Logo.png");
                         ImageView logoNodes = new ImageView(logos);
+                        //Give prompt to user to click hyperlinks
                         Text t = new Text("Click on the links to read the full story...");
                         t.setFont(new Font("Arial", 12));
 
@@ -177,26 +189,20 @@ public class GoodNewsMachine extends Application {
                         BackgroundImage background = new BackgroundImage(backI, BackgroundRepeat.NO_REPEAT,
                                 BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
                                 new BackgroundSize(620, 600, false, false, true, true));
+                        //Due to a JavaFX bug, scrollpane backgrounds aren't transparent and so will block a background image
+                        //To get around this we made the background belong to the VBox and then just
+                        //Expanded the VBox to fit the scrollpane
                         v.setBackground(new Background(background));
 
-                        //scroll.setStyle("-fx-background-color: transparent;");
                         StackPane tempStack = new StackPane();
-                        /*int rand = generateRandom(2, 8);
-                        Image back = new Image("images/background/Background2.jpg");
-                        BackgroundImage backg = new BackgroundImage(back, BackgroundRepeat.NO_REPEAT,
-                                BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
-                                new BackgroundSize(600, 600, false, false, true, true));
-                        //v.setBackground(new Background(backg));
 
-
-                        tempStack.getChildren().add(scroll);
-                        tempStack.setBackground(new Background(backg));
-                         */
                         //Give it a nice title
                         dialog.setTitle("Good News!");
                         //Add the scrollbar to the dialog box
                         dialog.setScene(new Scene(scroll, 620, 600));
                         dialog.getIcons().add(new Image("images/Icon.png"));
+                        //Refuse resize as scroll pane allows for all results to be seen
+                        //Means no weirdness can happen with background
                         dialog.setResizable(false);
 
                         //Show it to the user
@@ -205,7 +211,6 @@ public class GoodNewsMachine extends Application {
                 });
 
         //Add the GridBox to the Scene
-        System.out.println("Height: " + backI.getHeight() + " Width: " + backI.getWidth());
 
         Scene scene = new Scene(stack, 600, 480);
 
@@ -227,8 +232,12 @@ public class GoodNewsMachine extends Application {
         launch();
     }
 
+    //Since we called it twice we added a random generator to generate within a range
     public int generateRandom(int min, int max) {
+        //Found this on the internet (https://stackoverflow.com/questions/363681/how-do-i-generate-random-integers-within-a-specific-range-in-java)
         int num = min + (int)(Math.random() * ((max - min) + 1));
+        //This is just an extra checker because i don't completely trust it
+        //If the generated number does happen to be out of the range, set it to the middle number of the range
         if(!(num < max && num > min)) {
             num = (int) Math.ceil((max + min)/2);
         }
