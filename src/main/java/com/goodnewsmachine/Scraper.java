@@ -161,6 +161,21 @@ public class Scraper {
 		return null;
 	}
 
+	public ArrayList<String[]> getSkyLinks(String search) {
+		try {
+			userAgent.visit( "https://news.sky.com/uk");
+			Elements a = userAgent.doc.findEvery("<a class=sdc-site-tile__headline-link>");
+
+			ArrayList<Element> aList = new ArrayList<>(a.toList());
+
+			return getAllLinks(aList, search);
+		}
+		catch (JauntException e) {
+			e.printStackTrace();
+		}
+		return null;
+
+	}
 
 	public ArrayList<String[]> getReutersLinks(String search) {
 		//Reuters is an interesting one

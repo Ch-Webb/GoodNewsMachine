@@ -49,9 +49,8 @@ public class GoodNewsMachine extends Application {
                         "BBC",
                         "The Guardian",
                         "The Telegraph",
-                        "The Independent",
-                        "Reuters - Oddly Enough",
-                        "Option 6"
+                        "Sky News",
+                        "Reuters - Oddly Enough"
                 );
         final ComboBox<String> comboBox = new ComboBox<>(options);
         comboBox.setValue("BBC");
@@ -126,6 +125,7 @@ public class GoodNewsMachine extends Application {
                             case "BBC" -> s.getBBCLinks(search);
                             case "The Guardian" -> s.getGuardianLinks(search);
                             case "The Telegraph" -> s.getTelegraphLinks(search);
+                            case "Sky News" -> s.getSkyLinks(search);
                             case "Reuters - Oddly Enough" -> s.getReutersLinks(search);
                             //This will never be used but needs to be there for the compiler
                             default -> new ArrayList<>();
@@ -162,20 +162,22 @@ public class GoodNewsMachine extends Application {
                             v.getChildren().add(h);
                             v.setAlignment(Pos.CENTER);
 
-                            v.setPrefSize(600, 480);
-                            //Generates random background
-                            int image = generateRandom(2, 8);
-                            Image backI = new Image("images/background/Background" + image + ".jpg");
-                            BackgroundImage background = new BackgroundImage(backI, BackgroundRepeat.NO_REPEAT,
-                                    BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
-                                    new BackgroundSize(600, 480, false, false, true, true));
-                            v.setBackground(new Background(background));
+                            v.setPrefSize(620, 600);
+
                         }
 
                         root.getChildren().add(v);
                         StackPane.setAlignment(v, Pos.BASELINE_CENTER);
                         //Add the VBox to the scrollbar
                         scroll.setContent(v);
+
+                        //Generates random background
+                        int image = generateRandom(2, 8);
+                        Image backI = new Image("images/background/Background" + image + ".jpg");
+                        BackgroundImage background = new BackgroundImage(backI, BackgroundRepeat.NO_REPEAT,
+                                BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
+                                new BackgroundSize(620, 600, false, false, true, true));
+                        v.setBackground(new Background(background));
 
                         //scroll.setStyle("-fx-background-color: transparent;");
                         StackPane tempStack = new StackPane();
@@ -193,8 +195,9 @@ public class GoodNewsMachine extends Application {
                         //Give it a nice title
                         dialog.setTitle("Good News!");
                         //Add the scrollbar to the dialog box
-                        dialog.setScene(new Scene(scroll, 600, 600));
+                        dialog.setScene(new Scene(scroll, 620, 600));
                         dialog.getIcons().add(new Image("images/Icon.png"));
+                        dialog.setResizable(false);
 
                         //Show it to the user
                         dialog.show();
